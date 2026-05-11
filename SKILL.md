@@ -287,6 +287,9 @@ description: >
 - references/taiyuan-minggong.md — 胎元命宫身宫
 - references/classic-duanyu.md — 经典断语口诀库
 - references/master-methods.md — 名家方法论
+- references/choosing-yongshen.md — 用神确定完全指南
+- references/dayun-liuyear-interaction.md — 大运流年联动规则
+- references/nvming-zhuanlun.md — 女命专论（传统理论 + 现代视角）
 
 ---
 
