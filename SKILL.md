@@ -287,6 +287,18 @@ description: >
 - references/taiyuan-minggong.md — 胎元命宫身宫
 - references/classic-duanyu.md — 经典断语口诀库
 - references/master-methods.md — 名家方法论
+- references/hehun.md — 八字合婚完整指南（四柱合婚法 + 神煞/纳音参考 + 现代伦理）
+
+---
+
+## 合婚特殊模式
+
+如果用户明确要求"合婚 / 看两个人合不合 / 八字配对"：
+
+1. 进入**双八字模式**：按 references/hehun.md 规范流程依次收集**男女双方**的完整八字信息
+2. 分别排盘后，按四柱合婚法进行交叉分析（用神互补、日柱关系、大运同步、命格匹配）
+3. 给出 100 分制综合评分和各维度说明
+4. **严格遵守伦理声明**：合婚是参考不是判决，感情基础 > 命理评分
 
 ---
 
