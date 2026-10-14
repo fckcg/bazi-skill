@@ -1,0 +1,230 @@
+{
+  "rewritten_files": [
+    "jibing-yuce.md",
+    "wuyun-liuqi-bazi.md",
+    "ziwei-bazi-jiaocha.md",
+    "tiekou-guize.md"
+  ],
+  "line_edits": [
+    {
+      "file": "choosing-yongshen.md",
+      "changed_lines": [
+        105,
+        106,
+        168
+      ]
+    },
+    {
+      "file": "chuangye-bazi.md",
+      "changed_lines": [
+        937
+      ]
+    },
+    {
+      "file": "dayun-jiaojie.md",
+      "changed_lines": [
+        266
+      ]
+    },
+    {
+      "file": "dayun-liuyear-interaction.md",
+      "changed_lines": [
+        68
+      ]
+    },
+    {
+      "file": "falu-susong.md",
+      "changed_lines": [
+        305
+      ]
+    },
+    {
+      "file": "faq.md",
+      "changed_lines": [
+        4
+      ]
+    },
+    {
+      "file": "gaiyun-shicao.md",
+      "changed_lines": [
+        158,
+        585,
+        624,
+        866
+      ]
+    },
+    {
+      "file": "hehun.md",
+      "changed_lines": [
+        367,
+        422
+      ]
+    },
+    {
+      "file": "juece-zonghe.md",
+      "changed_lines": [
+        361
+      ]
+    },
+    {
+      "file": "liuri-duanshi.md",
+      "changed_lines": [
+        20,
+        434,
+        436,
+        443,
+        642,
+        643,
+        644,
+        663,
+        717
+      ]
+    },
+    {
+      "file": "liuyao-fuzhu.md",
+      "changed_lines": [
+        28,
+        471,
+        756
+      ]
+    },
+    {
+      "file": "liuyue-duanshi.md",
+      "changed_lines": [
+        381,
+        386,
+        416,
+        458,
+        647,
+        648,
+        651,
+        733
+      ]
+    },
+    {
+      "file": "manpai-school.md",
+      "changed_lines": [
+        191,
+        194
+      ]
+    },
+    {
+      "file": "master-methods.md",
+      "changed_lines": [
+        60,
+        61,
+        132,
+        140
+      ]
+    },
+    {
+      "file": "mingli-kexue.md",
+      "changed_lines": [
+        133,
+        135,
+        230,
+        249,
+        253
+      ]
+    },
+    {
+      "file": "mingli-misjudgments.md",
+      "changed_lines": [
+        285,
+        320,
+        674,
+        681,
+        930,
+        1021,
+        1030
+      ]
+    },
+    {
+      "file": "mingli-zixun-liucheng.md",
+      "changed_lines": [
+        293,
+        297,
+        328,
+        357,
+        423
+      ]
+    },
+    {
+      "file": "nvming-zhuanlun.md",
+      "changed_lines": [
+        133
+      ]
+    },
+    {
+      "file": "schools-framework.md",
+      "changed_lines": [
+        34
+      ]
+    },
+    {
+      "file": "shenfeng-bingyao.md",
+      "changed_lines": [
+        40
+      ]
+    },
+    {
+      "file": "shengxiao-yunshi.md",
+      "changed_lines": [
+        15,
+        146,
+        171,
+        261
+      ]
+    },
+    {
+      "file": "shensha-liunian.md",
+      "changed_lines": [
+        90,
+        165,
+        285,
+        527,
+        833,
+        883,
+        898
+      ]
+    },
+    {
+      "file": "shier-changsheng-yingyong.md",
+      "changed_lines": [
+        166
+      ]
+    },
+    {
+      "file": "toushi-licai-bazi.md",
+      "changed_lines": [
+        20
+      ]
+    },
+    {
+      "file": "yijing-foundation.md",
+      "changed_lines": [
+        436
+      ]
+    },
+    {
+      "file": "yingqi-duanshi.md",
+      "changed_lines": [
+        41,
+        44,
+        77
+      ]
+    },
+    {
+      "file": "yuanhai-zipin-fuwen.md",
+      "changed_lines": [
+        113,
+        447,
+        451,
+        559,
+        630,
+        885,
+        888
+      ]
+    }
+  ]
+}

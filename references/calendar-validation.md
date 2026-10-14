@@ -11,7 +11,7 @@
 ```
 python -m unittest discover -s scripts -p "test_*.py"
 ```
-18项测试通过，其中两项历表回归分别覆盖2424项日期和432项时刻。日期测试显式记录已知例外，不能把测试通过解释为2424项全一致。
+当前29项测试通过，其中两项历表回归分别覆盖2424项日期和432项时刻。日期测试显式记录已知例外，不能把测试通过解释为2424项全一致。
 
 复核来源：
 - https://www.hko.gov.hk/en/gts/time/conversion1_text.htm

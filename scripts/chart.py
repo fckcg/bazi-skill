@@ -8,9 +8,9 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent / 'vendor'))
-from lunar_python import Solar
+from lunar_python import Solar, Lunar
 
-VERSION = '2.1.0-local'
+VERSION = '2.2.0-local'
 GAN = '甲乙丙丁戊己庚辛壬癸'
 ZHI = '子丑寅卯辰巳午未申酉戌亥'
 CST = timezone(timedelta(hours=8))
@@ -167,9 +167,51 @@ def chart(birth, gender=None, longitude=None, clock='standard', day_rule='early-
     }
 
 
+def lunar_birth(lunar_date, birth_time, utc_offset, leap=False):
+    """Convert a Chinese lunar calendar date; never infer leap month or UTC offset."""
+    import re
+    if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", lunar_date):
+        raise ValueError('Lunar date must be YYYY-MM-DD with month 01 through 12.')
+    year, month, day = map(int, lunar_date.split('-'))
+    if not 1950 <= year <= 2050 or not 1 <= month <= 12 or not 1 <= day <= 30:
+        raise ValueError('Invalid lunar year, month or day.')
+    if not re.fullmatch(r"[0-9]{2}:[0-9]{2}(?::[0-9]{2})?", birth_time):
+        raise ValueError('Birth time must be HH:MM or HH:MM:SS.')
+    if not re.fullmatch(r"[+-](?:0[0-9]|1[0-4]):[0-5][0-9]", utc_offset):
+        raise ValueError('Historical UTC offset must be explicit, e.g. +08:00.')
+    try:
+        clock = datetime.fromisoformat('2000-01-01T'+birth_time+utc_offset)
+    except ValueError as e:
+        raise ValueError('Invalid birth time or UTC offset.') from e
+    # Explicitly restrict direct lunar input to China/Hong Kong clock conventions.
+    # Overseas lunar dates need calendar/location clarification before conversion.
+    if clock.utcoffset() not in (timedelta(hours=8), timedelta(hours=9)):
+        raise ValueError('Direct lunar input supports +08:00 or historical China DST +09:00. Convert overseas lunar dates separately and use --birth.')
+    try:
+        lunar = Lunar.fromYmdHms(year, -month if leap else month, day,
+                                clock.hour, clock.minute, clock.second)
+        solar = lunar.getSolar()
+        converted = datetime(solar.getYear(), solar.getMonth(), solar.getDay(),
+                             clock.hour, clock.minute, clock.second, tzinfo=clock.tzinfo)
+        # Independent round trip ensures the library has not normalized the input.
+        check = Solar.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay()).getLunar()
+        if (check.getYear(), check.getMonth(), check.getDay()) != (year, -month if leap else month, day):
+            raise ValueError('Lunar conversion round trip did not match the input.')
+    except Exception as e:
+        raise ValueError('Invalid lunar date or nonexistent leap month: '+str(e)) from e
+    if not 1950 <= converted.year <= 2050:
+        raise ValueError('Converted Gregorian birth year is outside 1950-2050.')
+    return converted.isoformat()
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--birth', required=True, help='ISO local civil timestamp with historical UTC offset')
+    dates = p.add_mutually_exclusive_group(required=True)
+    dates.add_argument('--birth', help='ISO local civil timestamp with historical UTC offset')
+    dates.add_argument('--lunar-date', help='Chinese lunar date YYYY-MM-DD; month is unsigned')
+    p.add_argument('--lunar-leap', action='store_true', help='Explicitly select the leap month')
+    p.add_argument('--time', help='Birth clock time HH:MM[:SS], required for lunar input')
+    p.add_argument('--utc-offset', help='Historical UTC offset, required for lunar input')
     p.add_argument('--gender', choices=['male', 'female'])
     p.add_argument('--longitude', type=float)
     p.add_argument('--clock', choices=['standard', 'mean', 'apparent'], default='standard')
@@ -177,7 +219,20 @@ def main():
     p.add_argument('--uncertainty', type=int, default=0, help='± minutes; 0 means reported exact')
     a = p.parse_args()
     try:
-        result = chart(a.birth, a.gender, a.longitude, a.clock, a.day_rule, a.uncertainty)
+        if a.lunar_date:
+            if not a.time or not a.utc_offset:
+                raise ValueError('Lunar input requires --time and --utc-offset.')
+            birth = lunar_birth(a.lunar_date, a.time, a.utc_offset, a.lunar_leap)
+        else:
+            if a.time or a.utc_offset or a.lunar_leap:
+                raise ValueError('--time, --utc-offset and --lunar-leap only apply to --lunar-date.')
+            birth = a.birth
+        result = chart(birth, a.gender, a.longitude, a.clock, a.day_rule, a.uncertainty)
+        result['input'] = {'calendar': 'lunar' if a.lunar_date else 'gregorian',
+                           'original_date': a.lunar_date or a.birth,
+                           'leap_month': bool(a.lunar_leap) if a.lunar_date else None,
+                           'birth_time': a.time, 'historical_utc_offset': a.utc_offset,
+                           'converted_gregorian_birth': birth}
     except ValueError as e:
         p.error(str(e))
     print(json.dumps(result, ensure_ascii=False, indent=2))
