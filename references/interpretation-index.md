@@ -102,3 +102,5 @@
 - [现代职业匹配手册（八字 × AI 时代）](zhiye-pipei-xiandai.md)
 - [子平真诠四神体系（用神·相神·喜神·忌神）](zipin-zhenquan-sishen.md)
 - [八字与紫微的传统规则比较](ziwei-bazi-jiaocha.md)
+
+- [原文核对范围与限制](source-review-scopes.md)

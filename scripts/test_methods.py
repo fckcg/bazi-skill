@@ -67,6 +67,7 @@ class MethodTests(unittest.TestCase):
 
     def test_tiaohou_rule_does_not_apply_to_other_days(self):
         self.c['central']['pillars'][2]='丁亥'
+        self.c['candidates'][0]['pillars'][2]='丁亥'
         f=review_chart(self.c,'yu-chuntai')['method_results'][0]['rules'][0]['finding']
         self.assertFalse(f['applicable'])
         self.assertEqual(f['requested_stems'],{})
@@ -103,7 +104,7 @@ class MethodTests(unittest.TestCase):
         self.assertEqual(b.returncode,0,b.stderr)
         x,y=json.loads(a.stdout),json.loads(b.stdout)
         self.assertEqual(x['central'],y['central'])
-        self.assertEqual(y['method_comparison']['methods_version'],'2.3.0-local')
+        self.assertEqual(y['method_comparison']['methods_version'],'2.4.0-local')
         self.assertEqual(len(y['method_comparison']['method_results']),15)
 
     def test_cli_unknown_method_is_friendly_error(self):

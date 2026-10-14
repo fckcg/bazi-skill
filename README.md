@@ -1,4 +1,4 @@
-# bazi 修复版 2.3.0
+# bazi 修复版 2.4.0
 
 本包是 fckcg/bazi-skill 的本地修订版，未发布到上游仓库。
 
@@ -20,7 +20,7 @@ JSON记录计算版本、时间约定、修正、四柱、大运、候选盘及�
 - 出生时间不确定时扫描候选盘，不以往事拟合确定时辰。
 - 重写技能入口，去除强制断事、器官疾病预测和无依据准确率。
 - 旧参考材料移除数值百分比，并标明未经实证验证，仅用于传统文化解释。
-- 新增44项回归测试（含2424项日期和432项时刻比对），含输入校验、历表抽查、换日、夏令时偏移和时辰/节气边界。
+- 新增57项回归测试（含2424项日期和432项时刻比对），含输入校验、历表抽查、换日、夏令时偏移和时辰/节气边界。
 
 ## 限制
 支持1950—2050出生年份；时区偏移由调用者核实，暂未自动接入历史时区库。
@@ -53,6 +53,14 @@ python scripts/methods.py --list
 python scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --gender female --methods shen-xiaozhan,ren-tieqiao,yu-chuntai
 python scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --methods all
 ```
-15位作者各有独立档案、来源和核对清单；当前5条文本规则可执行结构检查，其余仅提供待核对的研究路径。结果不模拟作者人格或承诺事件预测。
+15位作者各有独立档案、来源和核对清单；当前10条文本规则可执行结构检查，其余仅提供待核对的研究路径。结果不模拟作者人格或承诺事件预测。
 资料入口：references/master-methods.md；结构化登记：references/method-registry.json。
 纠正袁树珊著作的明代归属，统一穷通宝鉴书名，分开沈氏原文与徐注。保留时间不确定性与各派分歧，不将结果投票合并成吉凶。
+
+## 中文报告与候选比较（2.4）
+```
+python -X utf8 scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --longitude 117.03 --clock apparent --uncertainty 20 | python -X utf8 scripts/methods.py --chart-json - --select chen-suan,wei-qianli,yuan-shushan --format markdown
+```
+管道输入不要求先写出生信息文件。报告显示各候选四柱、每条规则的检查结果、是否随候选变化、来源范围及未核实归属。
+当前8个模块的所列原文段落已核对，共10条有限结构规则。其余作者仍待正文核对，不宣称全部理论已实现。
+原文核对范围见references/source-review-scopes.md。程序会拒绝没有对应来源、未核对、错属作者或登记不一致的规则。

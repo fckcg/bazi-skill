@@ -4,7 +4,7 @@
 
 规则注册在method-registry.json，只有登记为已核对且有章节定位的规则可以归属作者。其余流程是项目设计的研究清单。
 
-| 作者 | 关注点 | 核对状态 | 独立说明 |
+| 作者 | 关注点 | 状态 | 独立说明 |
 |---|---|---|---|
 | 沈孝瞻 | 格局法 | text_excerpt_checked | [模块](methods/shen-xiaozhan.md) |
 | 任铁樵 | 气势与根气 | text_excerpt_checked | [模块](methods/ren-tieqiao.md) |
@@ -12,10 +12,10 @@
 | 余春台 | 调候法 | text_excerpt_checked | [模块](methods/yu-chuntai.md) |
 | 万民英 | 经典汇编 | bibliography_checked | [模块](methods/wan-minying.md) |
 | 张楠 | 病药法 | text_excerpt_checked | [模块](methods/zhang-nan.md) |
-| 韦千里 | 讲义与案例 | bibliography_checked | [模块](methods/wei-qianli.md) |
+| 韦千里 | 讲义与案例 | text_excerpt_checked | [模块](methods/wei-qianli.md) |
 | 梁湘润 | 子平母法研究 | bibliography_checked | [模块](methods/liang-xiangrun.md) |
-| 陈素庵 | 条件与用神讨论 | bibliography_checked | [模块](methods/chen-suan.md) |
-| 袁树珊 | 文献与术语 | bibliography_checked | [模块](methods/yuan-shushan.md) |
+| 陈素庵 | 条件与用神讨论 | text_excerpt_checked | [模块](methods/chen-suan.md) |
+| 袁树珊 | 文献与术语 | text_excerpt_checked | [模块](methods/yuan-shushan.md) |
 | 邹文耀 | 分歧与考证 | bibliography_checked | [模块](methods/zou-wenyao.md) |
 | 段建业 | 盲派理象研究 | bibliography_checked | [模块](methods/duan-jianye.md) |
 | 吴俊民 | 近现代理论研究 | bibliography_checked | [模块](methods/wu-junmin.md) |

@@ -1,6 +1,6 @@
 {
-  "version": "2.3.0-local",
-  "scope": "15位作者的独立档案、出处与项目核对流程；5条已核对的文本规则，不代表完整著作已录入",
+  "version": "2.4.0-local",
+  "scope": "15位作者档案、10条已核对段落的结构规则；不代表整本著作已实现",
   "profiles": [
     {
       "id": "shen-xiaozhan",
@@ -145,17 +145,26 @@
         "千里命稿、初级命学讲义"
       ],
       "focus": "讲义与案例",
-      "source_status": "bibliography_checked",
+      "source_status": "text_excerpt_checked",
       "sources": [
         {
           "url": "https://www.books.com.tw/products/0010751464",
           "locator": "目录与作者序",
           "edition_note": "数字文本/公开书目；不伪造印本页码",
           "checked_on": "2026-10-14"
+        },
+        {
+          "url": "https://www.cnddy.com/1605.html",
+          "locator": "千里命稿：比劫禄刃篇，比肩之构成、劫财之构成；千里命稿：格局篇，八格之取法四项",
+          "edition_note": "数字转录，已区分原文与网站解释；印本页码未核对",
+          "checked_on": "2026-10-14"
         }
       ],
       "project_checklist": "以讲义目录组织基础核对和案例阅读；原文、作者评议和项目总结分开；案例不能作为效度证明。",
-      "verified_rule_ids": [],
+      "verified_rule_ids": [
+        "WEI-001",
+        "WEI-002"
+      ],
       "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
       "reference_file": "methods/wei-qianli.md"
     },
@@ -187,17 +196,26 @@
         "命理约言"
       ],
       "focus": "条件与用神讨论",
-      "source_status": "bibliography_checked",
+      "source_status": "text_excerpt_checked",
       "sources": [
         {
           "url": "https://www.diancang.xyz/xuanxuewushu/9589/",
           "locator": "四卷目录；卷一正文待核对",
           "edition_note": "数字文本/公开书目；不伪造印本页码",
           "checked_on": "2026-10-14"
+        },
+        {
+          "url": "https://yiology.net/books/命/八字命理/命理约言/",
+          "locator": "看用神法；看月令法二：旧书十二月支中所藏诸干段",
+          "edition_note": "数字转录，已区分原文与网站解释；印本页码未核对",
+          "checked_on": "2026-10-14"
         }
       ],
       "project_checklist": "从格局、取用、官杀等分项整理条件和例外；核对完整段落后登记规则。",
-      "verified_rule_ids": [],
+      "verified_rule_ids": [
+        "CHEN-001",
+        "CHEN-002"
+      ],
       "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
       "reference_file": "methods/chen-suan.md"
     },
@@ -208,17 +226,25 @@
         "增订命理探原"
       ],
       "focus": "文献与术语",
-      "source_status": "bibliography_checked",
+      "source_status": "text_excerpt_checked",
       "sources": [
         {
           "url": "https://taiwanebook.ncl.edu.tw/zh-tw/book/NCL-9910006747",
           "locator": "国家图书馆1938年再版书目",
           "edition_note": "数字文本/公开书目；不伪造印本页码",
           "checked_on": "2026-10-14"
+        },
+        {
+          "url": "https://luckclub.cn/bazi/009/004/",
+          "locator": "命理探原：卷三强弱，四时休旺",
+          "edition_note": "数字转录，已区分原文与网站解释；印本页码未核对",
+          "checked_on": "2026-10-14"
         }
       ],
       "project_checklist": "对传统术语和命例建立出处；核对版本及页码；不沿用旧材料的明代归属。",
-      "verified_rule_ids": [],
+      "verified_rule_ids": [
+        "YUAN-001"
+      ],
       "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
       "reference_file": "methods/yuan-shushan.md"
     },
@@ -340,7 +366,10 @@
         "month_branch",
         "month_hidden_gods"
       ],
-      "action": "month_focus"
+      "action": "month_focus",
+      "source_url": "https://www.anhappy.com/share/books/others/books/国学/子平真诠-沈孝瞻原著.pdf",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
     },
     {
       "id": "REN-001",
@@ -353,7 +382,10 @@
         "visible_gods",
         "season"
       ],
-      "action": "root_review"
+      "action": "root_review",
+      "source_url": "https://zh.wikisource.org/wiki/滴天髓闡微",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
     },
     {
       "id": "XU-001",
@@ -365,7 +397,10 @@
         "day_master",
         "month_branch"
       ],
-      "action": "separate_questions"
+      "action": "separate_questions",
+      "source_url": "https://www.anhappy.com/share/books/others/books/国学/子平真诠评注.pdf",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
     },
     {
       "id": "YU-001",
@@ -378,7 +413,10 @@
         "month_branch",
         "stem_presence"
       ],
-      "action": "wu_hai_review"
+      "action": "wu_hai_review",
+      "source_url": "https://zh.wikisource.org/wiki/穷通宝鉴",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
     },
     {
       "id": "ZHANG-001",
@@ -390,7 +428,85 @@
         "visible_gods",
         "branch_relations"
       ],
-      "action": "conditional_review"
+      "action": "conditional_review",
+      "source_url": "https://zh.wikisource.org/wiki/神峰通考",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
+    },
+    {
+      "id": "CHEN-001",
+      "profile": "chen-suan",
+      "topic": "扶抑取用的层次",
+      "locator": "看用神法",
+      "scope": "区分日主、六神、原局与行运的扶抑问题；先检查强弱依据，不凭一个十神的名字自动定吉凶。",
+      "fact_keys": [
+        "visible_gods",
+        "same_element_roots"
+      ],
+      "action": "support_control_review",
+      "source_url": "https://yiology.net/books/命/八字命理/命理约言/",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
+    },
+    {
+      "id": "CHEN-002",
+      "profile": "chen-suan",
+      "topic": "藏干分日争议",
+      "locator": "看月令法二：旧书十二月支中所藏诸干段",
+      "scope": "该段反对把藏干机械分配固定用事天数；保留本支与藏干的区别，不按分日表自动改变月柱或喜用。",
+      "fact_keys": [
+        "month_branch",
+        "month_hidden_gods"
+      ],
+      "action": "monthly_day_allocation",
+      "source_url": "https://yiology.net/books/命/八字命理/命理约言/",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
+    },
+    {
+      "id": "WEI-001",
+      "profile": "wei-qianli",
+      "topic": "比肩劫财的构成",
+      "locator": "千里命稿：比劫禄刃篇，比肩之构成、劫财之构成",
+      "scope": "同五行且同阴阳为比肩，异阴阳为劫财；本条只核对天干关系，不复制转录中的巳/已等误字或推导亲属事件。",
+      "fact_keys": [
+        "visible_gods",
+        "day_master"
+      ],
+      "action": "peer_review",
+      "source_url": "https://www.cnddy.com/1605.html",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
+    },
+    {
+      "id": "WEI-002",
+      "profile": "wei-qianli",
+      "topic": "月令透干取格的检查顺序",
+      "locator": "千里命稿：格局篇，八格之取法四项",
+      "scope": "先检查月支本气是否透干，再查其他藏干是否透出；并透或皆不透须进一步审查，比劫不在八格之内。这里只输出候选检查，不宣布成格。",
+      "fact_keys": [
+        "month_hidden_gods",
+        "stem_presence"
+      ],
+      "action": "month_appearance_priority",
+      "source_url": "https://www.cnddy.com/1605.html",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
+    },
+    {
+      "id": "YUAN-001",
+      "profile": "yuan-shushan",
+      "topic": "四时休旺的传统术语",
+      "locator": "命理探原：卷三强弱，四时休旺",
+      "scope": "将旺相休囚死视为季节性的传统术语，不能解释成器官、寿命或具体事件；辰戌丑未的土寄旺另列约定问题。",
+      "fact_keys": [
+        "season",
+        "month_branch"
+      ],
+      "action": "seasonal_states",
+      "source_url": "https://luckclub.cn/bazi/009/004/",
+      "evidence_status": "text_excerpt_checked",
+      "verification_note": "核对公开数字转录中的所列原文段落；未与所有印本逐字校勘，不包括网站白话、现代启示或历史断语。"
     }
   ],
   "policy": {
