@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent / 'vendor'))
 from lunar_python import Solar, Lunar
 
-VERSION = '2.2.0-local'
+VERSION = '2.3.0-local'
 GAN = '甲乙丙丁戊己庚辛壬癸'
 ZHI = '子丑寅卯辰巳午未申酉戌亥'
 CST = timezone(timedelta(hours=8))
@@ -212,6 +212,7 @@ def main():
     p.add_argument('--lunar-leap', action='store_true', help='Explicitly select the leap month')
     p.add_argument('--time', help='Birth clock time HH:MM[:SS], required for lunar input')
     p.add_argument('--utc-offset', help='Historical UTC offset, required for lunar input')
+    p.add_argument('--methods', help='Optional source-gated comparison: all or comma-separated author names/ids')
     p.add_argument('--gender', choices=['male', 'female'])
     p.add_argument('--longitude', type=float)
     p.add_argument('--clock', choices=['standard', 'mean', 'apparent'], default='standard')
@@ -233,6 +234,9 @@ def main():
                            'leap_month': bool(a.lunar_leap) if a.lunar_date else None,
                            'birth_time': a.time, 'historical_utc_offset': a.utc_offset,
                            'converted_gregorian_birth': birth}
+        if a.methods:
+            from methods import review_chart
+            result['method_comparison'] = review_chart(result, a.methods)
     except ValueError as e:
         p.error(str(e))
     print(json.dumps(result, ensure_ascii=False, indent=2))

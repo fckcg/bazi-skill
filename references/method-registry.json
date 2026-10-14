@@ -1,0 +1,402 @@
+{
+  "version": "2.3.0-local",
+  "scope": "15位作者的独立档案、出处与项目核对流程；5条已核对的文本规则，不代表完整著作已录入",
+  "profiles": [
+    {
+      "id": "shen-xiaozhan",
+      "author": "沈孝瞻",
+      "works": [
+        "子平真诠"
+      ],
+      "focus": "格局法",
+      "source_status": "text_excerpt_checked",
+      "sources": [
+        {
+          "url": "https://www.anhappy.com/share/books/others/books/国学/子平真诠-沈孝瞻原著.pdf",
+          "locator": "论用神",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "先核对月令与日干关系；把立格中心和扶抑补救分开；检查透干、配合与例外。",
+      "verified_rule_ids": [
+        "SHEN-001"
+      ],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/shen-xiaozhan.md"
+    },
+    {
+      "id": "ren-tieqiao",
+      "author": "任铁樵",
+      "works": [
+        "滴天髓阐微"
+      ],
+      "focus": "气势与根气",
+      "source_status": "text_excerpt_checked",
+      "sources": [
+        {
+          "url": "https://zh.wikisource.org/wiki/滴天髓闡微",
+          "locator": "月令、通关",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "记录月令、透干及通根；分析生克链条是否成立；不能仅凭五行数量判旺衰。",
+      "verified_rule_ids": [
+        "REN-001"
+      ],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/ren-tieqiao.md"
+    },
+    {
+      "id": "xu-lewu",
+      "author": "徐乐吾",
+      "works": [
+        "子平真诠评注"
+      ],
+      "focus": "评注比较",
+      "source_status": "text_excerpt_checked",
+      "sources": [
+        {
+          "url": "https://www.anhappy.com/share/books/others/books/国学/子平真诠评注.pdf",
+          "locator": "论用神评注",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "分栏记录原文与徐注；区分扶抑、病药、调候、专旺、通关的取用问题。",
+      "verified_rule_ids": [
+        "XU-001"
+      ],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/xu-lewu.md"
+    },
+    {
+      "id": "yu-chuntai",
+      "author": "余春台",
+      "works": [
+        "穷通宝鉴"
+      ],
+      "focus": "调候法",
+      "source_status": "text_excerpt_checked",
+      "sources": [
+        {
+          "url": "https://zh.wikisource.org/wiki/穷通宝鉴",
+          "locator": "三冬戊土",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "按日干与节气月查对应章节；分别检查所需天干的透出与藏干；不将调候取用等同全部喜忌。",
+      "verified_rule_ids": [
+        "YU-001"
+      ],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/yu-chuntai.md"
+    },
+    {
+      "id": "wan-minying",
+      "author": "万民英",
+      "works": [
+        "三命通会"
+      ],
+      "focus": "经典汇编",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://zh.wikisource.org/wiki/三命通會",
+          "locator": "待逐章核对",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "把格局、纳音、神煞来源分别标记；先读取所选卷章再归属规则；不将汇编中不同观点当作单一算法。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/wan-minying.md"
+    },
+    {
+      "id": "zhang-nan",
+      "author": "张楠",
+      "works": [
+        "神峰通考"
+      ],
+      "focus": "病药法",
+      "source_status": "text_excerpt_checked",
+      "sources": [
+        {
+          "url": "https://zh.wikisource.org/wiki/神峰通考",
+          "locator": "病药说",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "先定义命理内部受阻的关系，再检查制化路径；病药仅为结构比喻，不输出医疗判断。",
+      "verified_rule_ids": [
+        "ZHANG-001"
+      ],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/zhang-nan.md"
+    },
+    {
+      "id": "wei-qianli",
+      "author": "韦千里",
+      "works": [
+        "千里命稿、初级命学讲义"
+      ],
+      "focus": "讲义与案例",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://www.books.com.tw/products/0010751464",
+          "locator": "目录与作者序",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "以讲义目录组织基础核对和案例阅读；原文、作者评议和项目总结分开；案例不能作为效度证明。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/wei-qianli.md"
+    },
+    {
+      "id": "liang-xiangrun",
+      "author": "梁湘润",
+      "works": [
+        "子平母法大流年判例"
+      ],
+      "focus": "子平母法研究",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://www.yulinpress.com.tw/PPage/saproduct/ME-0294/子平母法大流年判例/?lang=zh-TW",
+          "locator": "出版社书目；正文待核对",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "分开记录本命、大运、流年层次；待核对原书规则后启用作者归属；不从书名猜测具体断法。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/liang-xiangrun.md"
+    },
+    {
+      "id": "chen-suan",
+      "author": "陈素庵",
+      "works": [
+        "命理约言"
+      ],
+      "focus": "条件与用神讨论",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://www.diancang.xyz/xuanxuewushu/9589/",
+          "locator": "四卷目录；卷一正文待核对",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "从格局、取用、官杀等分项整理条件和例外；核对完整段落后登记规则。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/chen-suan.md"
+    },
+    {
+      "id": "yuan-shushan",
+      "author": "袁树珊",
+      "works": [
+        "增订命理探原"
+      ],
+      "focus": "文献与术语",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://taiwanebook.ncl.edu.tw/zh-tw/book/NCL-9910006747",
+          "locator": "国家图书馆1938年再版书目",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "对传统术语和命例建立出处；核对版本及页码；不沿用旧材料的明代归属。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/yuan-shushan.md"
+    },
+    {
+      "id": "zou-wenyao",
+      "author": "邹文耀",
+      "works": [
+        "命学寻真"
+      ],
+      "focus": "分歧与考证",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://www.nccsoft.com/books/goods.php?id=9729",
+          "locator": "目录及作者序",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "记录同一标题的相反说法与不同解释；标明采用的时间和理论约定；不自动改用作者尚未核实的命式。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/zou-wenyao.md"
+    },
+    {
+      "id": "duan-jianye",
+      "author": "段建业",
+      "works": [
+        "段氏理象学"
+      ],
+      "focus": "盲派理象研究",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://item.xhsd.com/items/1010000103122040",
+          "locator": "出版信息；正文待核对",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "宫位、宾主、体用、做功等术语分别核对具体原文；不把网络口诀或其他盲派说法归为段氏方法。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/duan-jianye.md"
+    },
+    {
+      "id": "wu-junmin",
+      "author": "吴俊民",
+      "works": [
+        "命理新论"
+      ],
+      "focus": "近现代理论研究",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://lib.ihp.sinica.edu.tw/03-rare/MWSP/09/download/book.pdf",
+          "locator": "中研院馆藏书目",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "把不同排盘约定作为研究选项；规则须以正文核对；不覆盖默认立春换年和既有计算结果。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/wu-junmin.md"
+    },
+    {
+      "id": "he-jianzhong",
+      "author": "何建忠",
+      "works": [
+        "八字心理推命学"
+      ],
+      "focus": "心理象义研究",
+      "source_status": "bibliography_checked",
+      "sources": [
+        {
+          "url": "https://library.toread.bocach.gov.tw/webpac_rwd/content.cfm?mid=109044",
+          "locator": "图书馆1994年版书目",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "研究十神心理描述的原文；将自我讨论问题与心理评估分开；不生成心理诊断或智力标签。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/he-jianzhong.md"
+    },
+    {
+      "id": "zhong-yiming",
+      "author": "钟义明",
+      "works": [
+        "命理乾坤"
+      ],
+      "focus": "近现代案例研究",
+      "source_status": "bibliography_provisional",
+      "sources": [
+        {
+          "url": "https://www.xinyi.hk/goods-1262.html",
+          "locator": "书商书目；正文及印本待核对",
+          "edition_note": "数字文本/公开书目；不伪造印本页码",
+          "checked_on": "2026-10-14"
+        }
+      ],
+      "project_checklist": "按明确版本逐案检查推演；八字、紫微、风水材料分开；不将作者不同术数著作融合成一个断法。",
+      "verified_rule_ids": [],
+      "attribution_limit": "项目核对清单不是该作者的原文或完整算法；未核对的独门断法不可归属。",
+      "reference_file": "methods/zhong-yiming.md"
+    }
+  ],
+  "rules": [
+    {
+      "id": "SHEN-001",
+      "profile": "shen-xiaozhan",
+      "topic": "格局中心",
+      "locator": "论用神",
+      "scope": "先以日干与月令的生克关系讨论立格中心；此处用神与扶抑喜用不是同一定义。",
+      "fact_keys": [
+        "day_master",
+        "month_branch",
+        "month_hidden_gods"
+      ],
+      "action": "month_focus"
+    },
+    {
+      "id": "REN-001",
+      "profile": "ren-tieqiao",
+      "topic": "月令与根气",
+      "locator": "月令；通关",
+      "scope": "月令人元、透干及生克路径须结合检查；同五行藏干是结构线索，不能直接量化成强弱概率。",
+      "fact_keys": [
+        "same_element_roots",
+        "visible_gods",
+        "season"
+      ],
+      "action": "root_review"
+    },
+    {
+      "id": "XU-001",
+      "profile": "xu-lewu",
+      "topic": "用神术语比较",
+      "locator": "论用神评注",
+      "scope": "扶抑、病药、调候、专旺、通关分别回答不同问题；不能将不同取用合并成唯一答案。",
+      "fact_keys": [
+        "day_master",
+        "month_branch"
+      ],
+      "action": "separate_questions"
+    },
+    {
+      "id": "YU-001",
+      "profile": "yu-chuntai",
+      "topic": "戊土亥月调候",
+      "locator": "三冬戊土：十月段",
+      "scope": "该段讨论甲木与丙火，程序只核对其在命局的出现位置；不输出原文的功名贫富断语。",
+      "fact_keys": [
+        "day_master",
+        "month_branch",
+        "stem_presence"
+      ],
+      "action": "wu_hai_review"
+    },
+    {
+      "id": "ZHANG-001",
+      "profile": "zhang-nan",
+      "topic": "病药概念",
+      "locator": "病药说",
+      "scope": "病是命理结构中被认为受阻的关系，药是制化思路；需先论证所谓病，不可由五行缺项直接指定药。",
+      "fact_keys": [
+        "visible_gods",
+        "branch_relations"
+      ],
+      "action": "conditional_review"
+    }
+  ],
+  "policy": {
+    "prediction_validity": "not_established",
+    "unverified_rule_behavior": "withhold_author_attribution",
+    "combination": "parallel_comparison_no_voting",
+    "time_conventions": "inherit_chart_never_change_silently"
+  }
+}

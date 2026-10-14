@@ -15,14 +15,14 @@ class ReferenceIntegrityTests(unittest.TestCase):
     def test_no_unqualified_guarantees(self):
         strong=re.compile('必有|必然|必定|一定会|一定发生|必发生|必患')
         allowed=re.compile('历史引文|不得|不能|不要|禁止|不应|不宜|❌|反对|未向.*承诺|必有实墙|比劫多必有财官来制')
-        for path in (ROOT/'references').glob('*.md'):
+        for path in (ROOT/'references').rglob('*.md'):
             for i,line in enumerate(path.read_text(encoding='utf-8').splitlines(),1):
                 if strong.search(line):
                     with self.subTest(file=path.name,line=i):
                         self.assertIsNotNone(allowed.search(line))
 
     def test_no_numeric_accuracy_promises(self):
-        for path in (ROOT/'references').glob('*.md'):
+        for path in (ROOT/'references').rglob('*.md'):
             self.assertIsNone(re.search(r"[0-9]+\s*[%％]",path.read_text(encoding='utf-8')),path.name)
 
     def test_risky_modes_have_no_personal_prediction_tables(self):
