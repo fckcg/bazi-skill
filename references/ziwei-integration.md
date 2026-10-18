@@ -22,6 +22,7 @@ python -X utf8 scripts/chart.py --lunar-date 2014-09-21 --lunar-leap --time 15:1
 - 用户有确定流派时可显式--ziwei-leap split等。不能根据往事吻合自动选流派或改出生时刻。
 - --uncertainty仍是用户给出的±分钟，不把“前后”自动设为某个误差。太阳时额外±60秒是工程余量。紫微按秒扫描日期与时辰边界，并逐规则保留候选；上限沿用原入口0—120分钟。
 - 大限仅给传统年龄区间，不按运行当天自动判断“当前大限”，也不直接折算成精确公历年。
+- 闰月原始日保存在rawLunarYear/rawLunarMonth/rawLunarDay。split按实际日安星，不截断三十日；其他映射规则若因目标月只有二十九日而沿用上游截断，则dayClamped为true，中文报告显式说明。有效排盘日期不能冒充实际生日。
 
 ## 输出与适配范围
 
@@ -42,5 +43,7 @@ JSON保留原八字字段，新增ziwei。variants按闰月策略列central与ca
 运行python -m unittest discover -s scripts -p "test_*.py"。Node缺失时紫微引擎测试会明确跳过，不能据此宣称完整双盘核验通过；CI已加入Node步骤。
 
 新增验证涵盖96张跨年代盘的十二宫、十四主星、四化和独立命身宫公式，以及闰月、晚子时、历史偏移、时辰边界、离线CLI。结构测试不是紫微预测效度证明，也不是逐星对所有流派的全面校勘。
+
+2.5.1补查37个闰月的十五/十六日与四种策略组合，共296盘，并检查全部7个闰月三十日的分半元数据一致性。另检查春节与立春分开换年、来源清单错误和起运误差端点显示。Markdown中的起运端点仅为输入区间两端的计算值，不是严格包围区间内所有起运结果的上下界。
 
 重建仅供维护者：进入scripts/ziwei，安装pnpm后运行pnpm install --frozen-lockfile --ignore-scripts，再node build.cjs。检查生成bundle哈希、依赖许可证和provenance，运行测试后一起提交源码与engine.cjs。用户运行不需要这些构建工具。

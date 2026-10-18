@@ -64,7 +64,7 @@ python scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --gender female --lo
 交节附近的 near_solar_terms_requiring_review 非空时须提示复核，即使名义时间范围四柱稳定，也不宣称已排除星历误差。
 农历日期 lunar_date 按实际UTC+8瞬间；selected_wall_clock_lunar_date 仅显示所选太阳钟跨日后的日期，不能冒充天文历法日期。
 
-参考资料已清理保证式断语并重写四个高风险主题；经典语句只以历史引文呈现。维护时运行全部72项测试（包括资料完整性、农历入口和紫微适配测试），确认Node存在且紫微测试未跳过。GitHub自动测试配置在.github/workflows/tests.yml。
+参考资料已清理保证式断语并重写四个高风险主题；经典语句只以历史引文呈现。维护时运行全部78项测试（包括资料完整性、农历入口和紫微适配测试），确认Node存在且紫微测试未跳过。GitHub自动测试配置在.github/workflows/tests.yml。
 
 ## 名家模块（2.3）
 用户指定作者或要求多流派比较时，读取references/master-methods.md与method-registry.json，按作者id选择模块。可直接在chart.py加 --methods all 或逗号分隔的作者id；也支持简体中文作者姓名。

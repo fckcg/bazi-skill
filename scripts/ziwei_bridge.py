@@ -61,7 +61,12 @@ def run_engine(requests):
     bundle = ROOT / 'engine.cjs'
     if not bundle.is_file():
         raise ValueError('紫微离线引擎 engine.cjs 缺失，请使用完整发布包。')
-    manifest = json.loads((ROOT / 'provenance.json').read_text(encoding='utf-8'))
+    try:
+        manifest = json.loads((ROOT / 'provenance.json').read_text(encoding='utf-8'))
+        if not isinstance(manifest, dict):
+            raise ValueError('Expected a JSON object.')
+    except (OSError, ValueError) as error:
+        raise ValueError('紫微来源清单缺失或损坏，请使用完整发布包。') from error
     expected = manifest.get('bundle_sha256')
     if not expected or hashlib.sha256(bundle.read_bytes()).hexdigest() != expected:
         raise ValueError('紫微离线引擎校验失败，请重新构建并更新来源清单。')
@@ -135,6 +140,10 @@ def render_markdown(result):
         lines += ['', '候选四柱：'] + ['- ' + '　'.join(c['pillars']) for c in result['candidates']]
     if b.get('yun'):
         lines += ['', '大运（传统计算约定）：'] + [f"- {d['ganzhi']}：{d['start']} 至 {d['end_exclusive']}（终点不含）" for d in b['yun']['sequence']]
+        if result['conventions']['uncertainty_minutes']:
+            lines += ['', '出生时间误差两端对应的起运结果（不是严格起运范围）：']
+            lines += ['- ' + value for value in result['qiyun_endpoint_results']]
+            lines += ['若误差跨越交节或年界，区间内还可能出现其他起运结果。']
     lines += ['', '## 紫微', '',
               f"换年：农历正月初一；晚子时：{z['conventions']['day_rule']}；亮度：本地经典表口径。",
               '大限下表为传统年龄区间，不直接等同公历年份。']
@@ -144,6 +153,9 @@ def render_markdown(result):
                   f"命宫：{BRANCHES[c['mingGongBranch']]}；身宫：{BRANCHES[c['shenGongBranch']]}；{c['wuxingJuName']}；命主：{c['mingZhu']}；身主：{c['shenZhu']}。",
                   f"时间范围结构稳定：{'是' if v['structure_stable_in_scanned_range'] else '否'}；候选输入数：{len(v['candidates'])}。", '',
                   '| 宫位 | 地支 | 主星 | 本命四化 | 大限年龄 |', '|---|---|---|---|---|']
+        lunar = c['lunarInfo']
+        if lunar.get('dayClamped'):
+            lines.insert(len(lines)-2, f"该规则把原农历{lunar['rawLunarMonth']}月{lunar['rawLunarDay']}日映射为有效{lunar['lunarMonth']}月{lunar['lunarDay']}日（目标月天数截断）；这不改变实际生日。\n")
         for p in c['palaces']:
             major = '、'.join(s['name'] + ('（'+s['brightnessRaw']+'）' if s.get('brightnessRaw') else '')
                              for s in p['stars'] if s['type'] == 'major') or '空宫'

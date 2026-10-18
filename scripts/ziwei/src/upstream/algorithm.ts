@@ -95,7 +95,9 @@ export function resolveEffectiveLunarDate(
   }
 
   let lunarDay = rawLunarDay;
-  try {
+  // split is evaluated by iztro.bySolar on the original day; unlike byLunar
+  // policies, its day must not be clamped to a different month's day count.
+  if (policy !== 'split') try {
     const monthKey = isLeapMonth ? -lunarMonth : lunarMonth;
     const dayCount = LunarMonth.fromYm(lunarYear, monthKey)?.getDayCount?.();
     if (typeof dayCount === 'number' && dayCount > 0 && lunarDay > dayCount) lunarDay = dayCount;
@@ -161,6 +163,10 @@ export function getLunarInfo(
     yearStem: yearStem >= 0 ? yearStem : 0,
     yearBranch: yearBranch >= 0 ? yearBranch : 0,
     isLeapMonth: effective.isLeapMonth,
+    rawLunarYear: Number(lunar.getYear()),
+    rawLunarMonth: effective.rawLunarMonth,
+    rawLunarDay: effective.rawLunarDay,
+    dayClamped: effective.lunarDay !== effective.rawLunarDay,
     fourPillars,
     fourPillarsLunar,
   };

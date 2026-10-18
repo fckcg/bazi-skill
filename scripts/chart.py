@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent / 'vendor'))
 from lunar_python import Solar, Lunar
 
-VERSION = '2.5.0-local'
+VERSION = '2.5.1-local'
 GAN = '甲乙丙丁戊己庚辛壬癸'
 ZHI = '子丑寅卯辰巳午未申酉戌亥'
 CST = timezone(timedelta(hours=8))

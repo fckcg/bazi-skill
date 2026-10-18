@@ -24,6 +24,11 @@ export interface BirthInfo {
 }
 
 export interface LunarInfo {
+  /** Calendar date before the selected leap-month policy (negative month = leap). */
+  rawLunarYear?: number;
+  rawLunarMonth?: number;
+  rawLunarDay?: number;
+  dayClamped?: boolean;
   lunarYear: number;
   lunarMonth: number;    // positive = normal, negative = leap month
   lunarDay: number;

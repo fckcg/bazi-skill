@@ -31604,7 +31604,7 @@ function resolveEffectiveLunarDate(year, month, day, policy = "prev-month") {
     lunarYear += 1;
   }
   let lunarDay = rawLunarDay;
-  try {
+  if (policy !== "split") try {
     const monthKey = isLeapMonth ? -lunarMonth : lunarMonth;
     const dayCount = import_lunar_javascript.LunarMonth.fromYm(lunarYear, monthKey)?.getDayCount?.();
     if (typeof dayCount === "number" && dayCount > 0 && lunarDay > dayCount) lunarDay = dayCount;
@@ -31656,6 +31656,10 @@ function getLunarInfo(year, month, day, hour, policy = "prev-month") {
     yearStem: yearStem >= 0 ? yearStem : 0,
     yearBranch: yearBranch >= 0 ? yearBranch : 0,
     isLeapMonth: effective.isLeapMonth,
+    rawLunarYear: Number(lunar.getYear()),
+    rawLunarMonth: effective.rawLunarMonth,
+    rawLunarDay: effective.rawLunarDay,
+    dayClamped: effective.lunarDay !== effective.rawLunarDay,
     fourPillars,
     fourPillarsLunar
   };

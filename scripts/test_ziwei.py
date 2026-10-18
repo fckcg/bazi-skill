@@ -61,9 +61,81 @@ class AdapterTests(unittest.TestCase):
         for p in m['runtime_packages']:
             self.assertIn(p['name']+'@'+p['version'], notices)
 
+    def test_broken_manifest_is_actionable(self):
+        with patch('ziwei_bridge.shutil.which', return_value='node'):
+            for content in ('{bad json', '[]'):
+                with patch('ziwei_bridge.Path.read_text', return_value=content):
+                    with self.assertRaisesRegex(ValueError, '清单缺失或损坏'):
+                        run_engine([])
+            with patch('ziwei_bridge.Path.read_text', side_effect=FileNotFoundError()):
+                with self.assertRaisesRegex(ValueError, '清单缺失或损坏'):
+                    run_engine([])
+
 
 @unittest.skipUnless(NODE, 'Ziwei integration requires Node.js 18+')
 class EngineTests(unittest.TestCase):
+    def test_all_seven_leap_day30_split_dates_remain_day30(self):
+        dates = ['1952-07-21', '1955-05-21', '1979-08-22', '2017-08-21',
+                 '2036-08-21', '2047-07-22', '2050-05-20']
+        requests = []
+        for date in dates:
+            y, m, d = map(int, date.split('-'))
+            requests.append({'birthInfo': {'year': y, 'month': m, 'day': d, 'hour': 8,
+                                           'gender': 'female'}, 'leapMonth': 'split'})
+        for date, c in zip(dates, run_engine(requests)):
+            with self.subTest(date=date):
+                self.assertEqual(c['lunarInfo']['lunarDay'], 30)
+                self.assertEqual(c['lunarInfo']['rawLunarDay'], 30)
+                self.assertFalse(c['lunarInfo']['dayClamped'])
+
+    def test_all_leap_month_midpoints_follow_explicit_policy(self):
+        from lunar_python import LunarYear, Lunar
+        requests, expected = [], []
+        for year in range(1950, 2051):
+            for month in LunarYear.fromYear(year).getMonths():
+                if month.getYear() != year or month.getMonth() >= 0:
+                    continue
+                for day in (15, 16):
+                    solar = Lunar.fromYmd(year, month.getMonth(), day).getSolar()
+                    for policy in ('split', 'prev-month', 'next-month', 'origin-month'):
+                        m = abs(month.getMonth())
+                        if policy == 'next-month' or policy == 'split' and day > 15:
+                            m += 1
+                        requests.append({'birthInfo': {'year': solar.getYear(), 'month': solar.getMonth(),
+                                                       'day': solar.getDay(), 'hour': 8, 'gender': 'female'},
+                                         'leapMonth': policy})
+                        expected.append(((m+1-8) % 12, (m+1+8) % 12))
+        self.assertGreater(len(requests), 200)
+        for start in range(0, len(requests), 64):
+            for c, (ming, shen) in zip(run_engine(requests[start:start+64]), expected[start:start+64]):
+                self.assertEqual((c['mingGongBranch'], c['shenGongBranch']), (ming, shen))
+
+    def test_lunar_year_does_not_follow_bazi_lichun(self):
+        b = chart('2024-02-05T12:00:00+08:00')
+        self.assertEqual(b['central']['pillars'][0], '甲辰')
+        z = compare(b, 'female', 'split')['variants'][0]['central']['chart']
+        self.assertEqual(z['lunarInfo']['lunarYear'], 2023)
+        self.assertEqual(z['lunarInfo']['yearStem'], 9)
+        after = compare(chart('2024-02-10T12:00:00+08:00'), 'female', 'split')
+        self.assertEqual(after['variants'][0]['central']['chart']['lunarInfo']['yearStem'], 0)
+
+    def test_uncertain_qiyun_endpoints_visible_in_markdown(self):
+        b = chart('2014-11-13T15:00:00+08:00', 'female', uncertainty=1)
+        b['ziwei'] = compare(b, 'female', 'split')
+        report = render_markdown(b)
+        self.assertEqual(len(b['qiyun_endpoint_results']), 2)
+        for endpoint in b['qiyun_endpoint_results']:
+            self.assertIn(endpoint, report)
+
+    def test_non_split_day_clamp_is_visible_and_keeps_original_date(self):
+        b = chart('2017-08-21T15:16:00+08:00', 'female')
+        b['ziwei'] = compare(b, 'female', 'next-month')
+        lunar = b['ziwei']['variants'][0]['central']['chart']['lunarInfo']
+        self.assertEqual((lunar['rawLunarMonth'], lunar['rawLunarDay']), (-6, 30))
+        self.assertEqual((lunar['lunarMonth'], lunar['lunarDay']), (7, 29))
+        self.assertTrue(lunar['dayClamped'])
+        self.assertIn('目标月天数截断', render_markdown(b))
+
     def test_child_leap_month_variants(self):
         b = chart('2014-11-13T15:16:00+08:00', 'female', 116.36, 'apparent')
         z = compare(b, 'female')
