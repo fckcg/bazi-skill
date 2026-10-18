@@ -2,6 +2,8 @@
 
 名家选择先读master-methods.md；核对状态以method-registry.json为准。
 
+- [紫微排盘与双盘接入](ziwei-integration.md)
+
 - [八字 × MBTI 性格交叉指南](bazi-mbti-jiaocha.md)
 - [八字旺衰判断标准化体系](bazi-strength-rating.md)
 - [经核对的书目与版本说明](bibliography.md)

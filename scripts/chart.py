@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent / 'vendor'))
 from lunar_python import Solar, Lunar
 
-VERSION = '2.4.0-local'
+VERSION = '2.5.0-local'
 GAN = '甲乙丙丁戊己庚辛壬癸'
 ZHI = '子丑寅卯辰巳午未申酉戌亥'
 CST = timezone(timedelta(hours=8))
@@ -213,6 +213,11 @@ def main():
     p.add_argument('--time', help='Birth clock time HH:MM[:SS], required for lunar input')
     p.add_argument('--utc-offset', help='Historical UTC offset, required for lunar input')
     p.add_argument('--methods', help='Optional source-gated comparison: all or comma-separated author names/ids')
+    p.add_argument('--ziwei', action='store_true', help='Add offline ziwei chart (requires Node.js 18+)')
+    p.add_argument('--ziwei-leap', choices=['all', 'split', 'prev-month', 'next-month', 'origin-month'],
+                   default=None, help='Ziwei leap-month policy; defaults to all for comparison')
+    p.add_argument('--ziwei-day-rule', choices=['next-day', 'current-day'], default=None)
+    p.add_argument('--format', choices=['json', 'markdown'], default='json', help='Markdown requires --ziwei')
     p.add_argument('--gender', choices=['male', 'female'])
     p.add_argument('--longitude', type=float)
     p.add_argument('--clock', choices=['standard', 'mean', 'apparent'], default='standard')
@@ -220,6 +225,10 @@ def main():
     p.add_argument('--uncertainty', type=int, default=0, help='± minutes; 0 means reported exact')
     a = p.parse_args()
     try:
+        if not a.ziwei and (a.ziwei_leap or a.ziwei_day_rule or a.format != 'json'):
+            raise ValueError('--ziwei-leap, --ziwei-day-rule and --format markdown require --ziwei.')
+        if a.ziwei and a.gender is None:
+            raise ValueError('Ziwei requires --gender female or male.')
         if a.lunar_date:
             if not a.time or not a.utc_offset:
                 raise ValueError('Lunar input requires --time and --utc-offset.')
@@ -237,9 +246,21 @@ def main():
         if a.methods:
             from methods import review_chart
             result['method_comparison'] = review_chart(result, a.methods)
+        if a.ziwei:
+            from ziwei_bridge import compare
+            result['ziwei'] = compare(result, a.gender, a.ziwei_leap or 'all',
+                                      a.ziwei_day_rule or 'next-day')
     except ValueError as e:
         p.error(str(e))
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    if a.format == 'markdown':
+        from ziwei_bridge import render_markdown
+        rendered = render_markdown(result)
+        if a.methods:
+            from methods import render_markdown as render_methods
+            rendered += '\n' + render_methods(result['method_comparison'])
+        print(rendered)
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__':

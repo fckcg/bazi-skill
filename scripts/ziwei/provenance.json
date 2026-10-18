@@ -1,0 +1,61 @@
+{
+  "repository": "https://github.com/Renhuai123/ziwei-doushu",
+  "retrieved_date": "2026-10-17",
+  "archive_sha256": "2941b0b5d633279b559927c04d670c39aa741c7d1fac41376117bb0d2f83ff30",
+  "upstream_files_sha256": {
+    "lib/ziwei/algorithm.ts": "4a155269b6ac2dc69a947e59b774322f62406d7c83f66a514f320e69b65c7f80",
+    "lib/ziwei/types.ts": "96d37747fe3975a22c52076f2caf94142360e2fe7e6335e0341a1f4f2c8c892b",
+    "lib/ziwei/constants.ts": "02f190b8e2718c202de239d57a7e26e0b7b8e1f5155ddce1dbfe92ca1d6eec4e",
+    "LICENSE": "c0214b387494be5b7a6d3e7bf62897e43dd425c2b77f42e20925029252275be4"
+  },
+  "profile": "classic-table-adapter-v1",
+  "changes": [
+    "Excluded reverse-engineered wenmo modules and their star-placement patches.",
+    "Retained classic DEFAULT_BRIGHTNESS except the Wenmo-attributed Tanlang row; fallback to iztro.",
+    "Removed runtime-age selection; output is natal structure and decade-age ranges only.",
+    "Embedded approximate four-pillars fields are removed by the runner; Python is authoritative for bazi.",
+    "No online interpretation library, dataset or Tianji transcript is included."
+  ],
+  "bundle_sha256": "f2133c7eaac89771d5bfa99e2df63273a2acbdc1498512a50dcf8fdb7351e881",
+  "runtime_packages": [
+    {
+      "name": "dayjs",
+      "version": "1.11.23",
+      "license": "MIT"
+    },
+    {
+      "name": "i18next",
+      "version": "23.16.8",
+      "license": "MIT"
+    },
+    {
+      "name": "iztro",
+      "version": "2.5.8",
+      "license": "MIT"
+    },
+    {
+      "name": "lunar-javascript",
+      "version": "1.7.3",
+      "license": "MIT"
+    },
+    {
+      "name": "lunar-lite",
+      "version": "0.2.8",
+      "license": "MIT"
+    },
+    {
+      "name": "lunar-typescript",
+      "version": "1.8.6",
+      "license": "MIT"
+    }
+  ],
+  "local_sources_sha256": {
+    "src/runner.ts": "a93deaeaae0437cac53d7bb9b74063a88edd61d556031983198cc06151dec6fb",
+    "src/upstream/algorithm.ts": "6d42f09e149f0dc9c695daaf1ff76adde6559afb8e5935b7207e496ce9c43539",
+    "src/upstream/types.ts": "96d37747fe3975a22c52076f2caf94142360e2fe7e6335e0341a1f4f2c8c892b",
+    "src/upstream/constants.ts": "02f190b8e2718c202de239d57a7e26e0b7b8e1f5155ddce1dbfe92ca1d6eec4e",
+    "package.json": "84493a778e41cdb7611ccbac889d72759e9b3afe8f6faae92a396d17fcb8dc02",
+    "pnpm-lock.yaml": "d60b25a29f51fdd1f82fc308bae858aa96284d568466676e56d37e5f5ffcf35f",
+    "build.cjs": "1f9faf35dbd102a01b610833e9dccc5e5153b112c277e86724339cf4e1a08c06"
+  }
+}

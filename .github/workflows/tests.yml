@@ -27,7 +27,12 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
       - name: Run offline tests
         run: python -m unittest discover -s scripts -p "test_*.py"
       - name: Run lunar-input smoke test
         run: python scripts/chart.py --lunar-date 2014-09-21 --lunar-leap --time 15:16 --utc-offset=+08:00 --gender female
+      - name: Run offline dual-chart smoke test
+        run: python scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --gender female --longitude 116.36 --clock apparent --ziwei --format markdown
