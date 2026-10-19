@@ -1,0 +1,26 @@
+[
+  {
+    "subject_id": "A",
+    "year": 2020,
+    "category": "residence_change",
+    "outcome": 1
+  },
+  {
+    "subject_id": "A",
+    "year": 2021,
+    "category": "residence_change",
+    "outcome": 0
+  },
+  {
+    "subject_id": "B",
+    "year": 2020,
+    "category": "residence_change",
+    "outcome": 1
+  },
+  {
+    "subject_id": "B",
+    "year": 2021,
+    "category": "residence_change",
+    "outcome": null
+  }
+]

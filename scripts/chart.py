@@ -1,6 +1,7 @@
 """Deterministic chart calculation; no event or health predictions."""
 import argparse
 import calendar
+import hashlib
 from datetime import datetime, timedelta, timezone
 import json
 import math
@@ -10,7 +11,9 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent / 'vendor'))
 from lunar_python import Solar, Lunar
 
-VERSION = '2.5.1-local'
+from solar_time import equation_of_time, MODEL as SOLAR_MODEL
+
+VERSION = '2.6.0-local'
 GAN = '甲乙丙丁戊己庚辛壬癸'
 ZHI = '子丑寅卯辰巳午未申酉戌亥'
 CST = timezone(timedelta(hours=8))
@@ -24,7 +27,7 @@ def solar_datetime(s):
     return datetime(s.getYear(), s.getMonth(), s.getDay(), s.getHour(), s.getMinute(), s.getSecond(), tzinfo=CST)
 
 
-def equation_of_time(utc):
+def legacy_equation_of_time(utc):
     """NOAA fractional-year approximation, minutes; not precision ephemeris."""
     days = 366 if calendar.isleap(utc.year) else 365
     hour = utc.hour + utc.minute / 60 + utc.second / 3600
@@ -89,7 +92,7 @@ def calculate(dt, gender, longitude, clock='standard', day_rule='early-late'):
     return result
 
 
-def chart(birth, gender=None, longitude=None, clock='standard', day_rule='early-late', uncertainty=0):
+def chart(birth, gender=None, longitude=None, clock='standard', day_rule='early-late', uncertainty=None):
     dt = datetime.fromisoformat(birth)
     if dt.tzinfo is None or dt.utcoffset() is None:
         raise ValueError('Birth time must include its historical UTC offset, e.g. +08:00.')
@@ -101,9 +104,9 @@ def chart(birth, gender=None, longitude=None, clock='standard', day_rule='early-
         raise ValueError('Longitude must be between -180 and 180.')
     if clock != 'standard' and longitude is None:
         raise ValueError('Solar time requires an explicit longitude.')
-    if not isinstance(uncertainty, int) or not 0 <= uncertainty <= 120:
+    if uncertainty is not None and (type(uncertainty) is not int or not 0 <= uncertainty <= 120):
         raise ValueError('Uncertainty must be an integer from 0 to 120 minutes.')
-    radius = uncertainty * 60
+    radius = (uncertainty or 0) * 60
     # Conservative allowance for the approximate EoT formula near hour/day boundaries.
     scan_radius = radius + (60 if clock == 'apparent' else 0)
     candidates = {}
@@ -142,12 +145,39 @@ def chart(birth, gender=None, longitude=None, clock='standard', day_rule='early-
         if gender is not None and offset in (-radius, radius):
             start_times.append(sample['yun']['start_civil_time'])
     central = calculate(dt, gender, longitude, clock, day_rule)
+    qiyun_segments = []
+    if gender is not None and uncertainty is not None:
+        # Split by each Jie, civil-year boundary and midnight. Endpoints are
+        # explicitly probes; sect=2 has minute rounding, not a smooth function.
+        cuts = {dt-timedelta(seconds=radius), dt+timedelta(seconds=radius)}
+        for name, term in lunar_at(dt.astimezone(CST)).getJieQiTable().items():
+            if name in ('立春','惊蛰','清明','立夏','芒种','小暑','立秋','白露','寒露','立冬','大雪','小寒'):
+                stamp = solar_datetime(term).astimezone(dt.tzinfo)
+                if min(cuts) < stamp < max(cuts):
+                    cuts.add(stamp)
+        local_start = (dt-timedelta(seconds=radius)).astimezone(CST)
+        midnight = local_start.replace(hour=0, minute=0, second=0, microsecond=0)+timedelta(days=1)
+        if dt-timedelta(seconds=radius) < midnight < dt+timedelta(seconds=radius):
+            cuts.add(midnight.astimezone(dt.tzinfo))
+        ordered_cuts = sorted(cuts)
+        if len(ordered_cuts) == 1:
+            ordered_cuts.append(ordered_cuts[0])
+        for i, (left, right) in enumerate(zip(ordered_cuts, ordered_cuts[1:])):
+            last = i == len(ordered_cuts)-2
+            end_probe = right if last else right-timedelta(microseconds=1)
+            start_yun = calculate(left, gender, longitude, clock, day_rule)['yun']
+            end_yun = calculate(end_probe, gender, longitude, clock, day_rule)['yun']
+            qiyun_segments.append({'birth_start': left.isoformat(), 'birth_end': right.isoformat(),
+                                  'end_inclusive': last, 'start_probe': start_yun,
+                                  'end_probe': end_yun, 'is_certified_extrema': False})
     warnings = ['Traditional interpretations are not validated event predictions.',
                 'Historical UTC offset is supplied by the caller; DST is not inferred.',
                 'Year/month and qiyun use the actual instant in UTC+8; solar clock affects day/hour only.',
-                'Official comparison: 1950–2050 dates (2423/2424 agree; 1979 Dahan midnight difference), 2010–2027 times (432 checked, maximum observed difference 31 seconds). Other exact times are not fully verified.']
+                'Official comparison: 1950–2050 dates (2423/2424 agree; 1979 Dahan midnight difference), 2004–2027 times (576 checked, maximum observed difference 31 seconds). Other exact times are not fully verified.']
     if clock == 'apparent':
         warnings.append('Equation of time uses an approximation; candidate scan includes an extra ±60 seconds. This is an engineering allowance, not a certified error bound.')
+    if uncertainty is None:
+        warnings.append('Birth-time uncertainty is unknown; candidates only cover the nominal instant and solar-model allowance, not the full birth range.')
     near_terms = []
     for name, term in lunar_at(dt.astimezone(CST)).getJieQiTable().items():
         delta = (solar_datetime(term)-dt).total_seconds()
@@ -159,10 +189,15 @@ def chart(birth, gender=None, longitude=None, clock='standard', day_rule='early-
     return {
         'version': VERSION, 'engine': 'lunar_python==1.4.8',
         'conventions': {'clock': clock, 'day_rule': day_rule, 'qiyun': 'minute-based sect=2',
-                        'longitude': longitude, 'uncertainty_minutes': uncertainty},
+                        'longitude': longitude, 'uncertainty_minutes': uncertainty,
+                        'solar_model': SOLAR_MODEL, 'uncertainty_known': uncertainty is not None},
         'central': central, 'pillars_stable_in_scanned_range': len(candidates) == 1,
         'candidates': list(candidates.values()), 'qiyun_endpoint_results': start_times,
+        'qiyun_segments': qiyun_segments,
+        'stability_confirmed_for_reported_range': len(candidates) == 1 if uncertainty is not None else None,
         'near_solar_terms_requiring_review': near_terms,
+        'calculation_sources_sha256': {name:hashlib.sha256((Path(__file__).parent/name).read_bytes()).hexdigest()
+                                       for name in ('chart.py','solar_time.py','birth_record.py')},
         'warnings': warnings,
     }
 
@@ -208,6 +243,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     dates = p.add_mutually_exclusive_group(required=True)
     dates.add_argument('--birth', help='ISO local civil timestamp with historical UTC offset')
+    dates.add_argument('--record', help='Validated birth-record JSON file')
     dates.add_argument('--lunar-date', help='Chinese lunar date YYYY-MM-DD; month is unsigned')
     p.add_argument('--lunar-leap', action='store_true', help='Explicitly select the leap month')
     p.add_argument('--time', help='Birth clock time HH:MM[:SS], required for lunar input')
@@ -219,13 +255,38 @@ def main():
     p.add_argument('--ziwei-day-rule', choices=['next-day', 'current-day'], default=None)
     p.add_argument('--format', choices=['json', 'markdown'], default='json', help='Markdown requires --ziwei')
     p.add_argument('--gender', choices=['male', 'female'])
+    p.add_argument('--timezone', help='IANA zone, e.g. Asia/Shanghai; validate or resolve historical offset')
+    p.add_argument('--fold', type=int, choices=[0, 1])
+    p.add_argument('--time-source', choices=['birth_certificate', 'hospital_record', 'family_memory', 'unknown'])
+    p.add_argument('--place')
+    p.add_argument('--longitude-source')
+    p.add_argument('--sihua-profile', choices=['iztro', 'quanshu'], default=None)
     p.add_argument('--longitude', type=float)
-    p.add_argument('--clock', choices=['standard', 'mean', 'apparent'], default='standard')
-    p.add_argument('--day-rule', choices=['midnight', '23', 'early-late'], default='early-late')
-    p.add_argument('--uncertainty', type=int, default=0, help='± minutes; 0 means reported exact')
+    p.add_argument('--clock', choices=['standard', 'mean', 'apparent'], default=None)
+    p.add_argument('--day-rule', choices=['midnight', '23', 'early-late'], default=None)
+    p.add_argument('--uncertainty', type=int, default=None, help='± minutes; omitted means unknown, 0 explicitly means reported exact')
     a = p.parse_args()
     try:
-        if not a.ziwei and (a.ziwei_leap or a.ziwei_day_rule or a.format != 'json'):
+        from birth_record import load_record, resolve_birth
+        record = {}
+        if a.record:
+            if a.time or a.utc_offset or a.lunar_leap:
+                raise ValueError('Lunar-only flags cannot be combined with --record.')
+            record = load_record(a.record)
+            for field in ('gender','longitude','clock','day_rule','timezone','fold','time_source','place',
+                          'longitude_source','sihua_profile','ziwei_day_rule'):
+                if field in record:
+                    if getattr(a, field) is not None and getattr(a, field) != record[field]:
+                        raise ValueError('CLI option conflicts with birth record: '+field)
+                    setattr(a, field, record[field])
+            for field, attr in (('uncertainty_minutes','uncertainty'), ('ziwei_leap','ziwei_leap')):
+                if field in record:
+                    if getattr(a, attr) is not None and getattr(a, attr) != record[field]:
+                        raise ValueError('CLI option conflicts with birth record: '+field)
+                    setattr(a, attr, record[field])
+        a.clock = a.clock or 'standard'
+        a.day_rule = a.day_rule or 'early-late'
+        if not a.ziwei and (a.ziwei_leap or a.ziwei_day_rule or a.sihua_profile or a.format != 'json'):
             raise ValueError('--ziwei-leap, --ziwei-day-rule and --format markdown require --ziwei.')
         if a.ziwei and a.gender is None:
             raise ValueError('Ziwei requires --gender female or male.')
@@ -233,23 +294,31 @@ def main():
             if not a.time or not a.utc_offset:
                 raise ValueError('Lunar input requires --time and --utc-offset.')
             birth = lunar_birth(a.lunar_date, a.time, a.utc_offset, a.lunar_leap)
+        elif a.record:
+            birth = record['birth']
         else:
             if a.time or a.utc_offset or a.lunar_leap:
                 raise ValueError('--time, --utc-offset and --lunar-leap only apply to --lunar-date.')
             birth = a.birth
+        birth, timezone_evidence = resolve_birth(birth, a.timezone, a.fold)
         result = chart(birth, a.gender, a.longitude, a.clock, a.day_rule, a.uncertainty)
         result['input'] = {'calendar': 'lunar' if a.lunar_date else 'gregorian',
-                           'original_date': a.lunar_date or a.birth,
+                           'original_date': a.lunar_date or record.get('birth') or a.birth,
                            'leap_month': bool(a.lunar_leap) if a.lunar_date else None,
                            'birth_time': a.time, 'historical_utc_offset': a.utc_offset,
                            'converted_gregorian_birth': birth}
+        result['input']['record_schema_version'] = 1 if a.record else None
+        result['input']['time_source'] = a.time_source or 'unknown'
+        result['input']['place'] = a.place
+        result['input']['longitude_source'] = a.longitude_source or 'unspecified'
+        result['input']['timezone_evidence'] = timezone_evidence
         if a.methods:
             from methods import review_chart
             result['method_comparison'] = review_chart(result, a.methods)
         if a.ziwei:
             from ziwei_bridge import compare
             result['ziwei'] = compare(result, a.gender, a.ziwei_leap or 'all',
-                                      a.ziwei_day_rule or 'next-day')
+                                      a.ziwei_day_rule or 'next-day', a.sihua_profile or 'iztro')
     except ValueError as e:
         p.error(str(e))
     if a.format == 'markdown':

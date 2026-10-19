@@ -1,0 +1,22 @@
+{
+  "mode": "retrospective",
+  "split": "development",
+  "subjects": [
+    "A",
+    "B"
+  ],
+  "years": [
+    2020,
+    2021
+  ],
+  "categories": [
+    "residence_change"
+  ],
+  "definitions": {
+    "residence_change": "主要居住地迁移到另一城市并持续六个月以上；需要可核对记录；旅行和短期出差不计。"
+  },
+  "rules_version": "synthetic-example-only",
+  "engine_version": "synthetic-example-only",
+  "threshold": 0.5,
+  "prediction_cutoff": "2026-01-01T00:00:00+00:00"
+}

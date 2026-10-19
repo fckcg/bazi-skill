@@ -1,6 +1,23 @@
-# bazi 修复版 2.5.1
+# bazi 修复版 2.6.0
 
 本包是 fckcg/bazi-skill 的本地修订版，未发布到上游仓库。
+
+## 2.6 本地使用
+
+```sh
+python -X utf8 scripts/local_app.py
+```
+
+浏览器打开http://127.0.0.1:8765：出生资料表单、十二宫图、规则/时间候选切换、JSON和中文报告下载。只在本机处理，Ctrl+C退出。
+
+误差未明确时现在记录为null，不再默认为0。新增固定IANA历史时区检查、NOAA/Meeus太阳时模型、跨交节起运分段、紫微独立公式核对、四化表配置与断事盲测登记工具。
+
+```sh
+python -X utf8 scripts/chart.py --record assets/examples/birth-record.json --ziwei --format markdown
+python -X utf8 scripts/verify_project.py --report verification-run.json
+```
+
+升级细节见references/upgrade-2.6.md；盲测方法见references/study-protocol.md。没有把工具升级宣称为已经能够准确预测经历。
 
 ## 紫微与双盘（新增）
 
@@ -32,11 +49,11 @@ JSON记录计算版本、时间约定、修正、四柱、大运、候选盘及�
 - 出生时间不确定时扫描候选盘，不以往事拟合确定时辰。
 - 重写技能入口，去除强制断事、器官疾病预测和无依据准确率。
 - 旧参考材料移除数值百分比，并标明未经实证验证，仅用于传统文化解释。
-- 当前78项回归测试（含2424项日期和432项时刻比对、96张紫微结构样例、37个闰月的296组月中规则组合），含输入校验、历表抽查、换日、历史时区偏移和时辰/节气边界。
+- 测试数量、运行版本与覆盖范围自动生成于references/verification-summary.md；包含历表、独立紫微公式、时区、输入质量、盲测登记和本地表单。
 
 ## 限制
 支持1950—2050出生年份；时区偏移由调用者核实，暂未自动接入历史时区库。
-节气日期核验覆盖1950—2050，时刻核验覆盖2010—2027；1979大寒保留一个已知日期差异。详见references/calendar-validation.md。
+节气日期核验覆盖1950—2050，时刻核验覆盖2004—2027；1979大寒保留一个已知日期差异。详见references/calendar-validation.md。
 传统规则未建立预测效度，不能据此诊断疾病、限定孩子能力或决定投资。
 均时差额外±60秒为工程余量，不是严格误差上界。
 原始项目和随附依赖的许可证分别保留于LICENSE和scripts/vendor的dist-info/licenses。

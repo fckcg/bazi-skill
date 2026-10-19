@@ -5,6 +5,11 @@ description: 四柱八字、紫微斗数排盘与传统流派文化解读。用�
 
 # 八字排盘与传统解读
 
+## 2.6入口
+本地表单、出生记录、时区、未知误差、起运分段与紫微独立核对见references/upgrade-2.6.md，按需读取。网页入口python scripts/local_app.py，仅监听本机。
+误差未明确时不设--uncertainty，程序记录null；明确按记录时刻才设0。旧稳定标记仅为名义扫描，不能用它确认未知范围。--record读完整记录，--timezone检查历史偏移，重复时间须明确fold。
+用户要求验证预测能力时读取references/study-protocol.md，用study.py登记和评估；不把工具和合成案例称作预测已有效。查看private经历后不能再称自己的判断为盲测。
+
 ## 紫微与双盘（2.5）
 用户要求紫微或双盘比较时，读取references/ziwei-integration.md。仍调用scripts/chart.py，加--ziwei；--format markdown可生成中文双盘报告。紫微需要Node.js 18+，离线依赖已打包，八字单独使用不需要Node。
 默认并列四种闰月策略；用户指定时用--ziwei-leap选择。紫微晚子时--ziwei-day-rule与八字--day-rule分开记录。出生资料只校正一次，不重复扣夏令时或太阳时。JSON保留各规则和时间候选，不按往事拟合选盘。
@@ -12,7 +17,7 @@ description: 四柱八字、紫微斗数排盘与传统流派文化解读。用�
 
 ## 收集信息
 收集出生年月日、公历/农历及闰月、实际出生时间及误差范围、出生区县或医院、历史时区。姓名、曾用名、在世状态不是排盘必要信息。
-剖宫产按实际出生记录，不按手术开始时间。性别只在用户要传统大运时收集。
+剖宫产按实际出生记录，不按手术开始时间。性别在用户要传统大运或紫微时收集。
 农历输入直接使用 --lunar-date YYYY-MM-DD --time HH:MM --utc-offset=+08:00；闰月明确加 --lunar-leap，月份仍写正数。向用户展示JSON中的原始农历与公历换算结果。不要求用户重复提供两个历法生日。直接入口限中国农历和UTC+8/核实的历史夏令时UTC+9；海外农历先明确日期约定再转换为公历。
 “前后”不等于精确时间，询问大致误差。未获得误差时只报暂定结果，不宣称稳定。
 国内默认UTC+8，涉及历史夏令时或海外必须核实出生记录的实际UTC偏移。
@@ -25,7 +30,7 @@ python scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --gender female --lo
 ```
 
 该命令只是调用示例，不代表用户误差默认±5分钟。
---birth必须含历史UTC偏移；--gender可不提供；--uncertainty表示±分钟，支持0—120。
+--birth必须含历史UTC偏移；--gender可不提供；--uncertainty表示已提供的±分钟，支持0—120；省略表示误差未知，不等同0。
 时间误差更大时分段覆盖完整范围，或报告时柱未定，不截断为±120分钟。
 默认标准时间 standard；可选 mean 平太阳时、apparent 真太阳时。太阳时需要经度。
 --day-rule可选 midnight、23、early-late，默认early-late。向用户标注所用约定。
@@ -59,12 +64,12 @@ python scripts/chart.py --birth "2014-11-13T15:16:00+08:00" --gender female --lo
 ## 验证维护
 修改计算后运行 python -m unittest discover -s scripts -p "test_*.py"。
 依赖版本 lunar_python==1.4.8；保留 scripts/vendor 的许可与元数据。
-核验范围见 references/calendar-validation.md；日期已覆盖1950—2050，时刻覆盖2010—2027，保留1979大寒的已知日期差异。
+核验范围见 references/calendar-validation.md；日期已覆盖1950—2050，时刻覆盖2004—2027，保留1979大寒的已知日期差异。
 
 交节附近的 near_solar_terms_requiring_review 非空时须提示复核，即使名义时间范围四柱稳定，也不宣称已排除星历误差。
 农历日期 lunar_date 按实际UTC+8瞬间；selected_wall_clock_lunar_date 仅显示所选太阳钟跨日后的日期，不能冒充天文历法日期。
 
-参考资料已清理保证式断语并重写四个高风险主题；经典语句只以历史引文呈现。维护时运行全部78项测试（包括资料完整性、农历入口和紫微适配测试），确认Node存在且紫微测试未跳过。GitHub自动测试配置在.github/workflows/tests.yml。
+参考资料已清理保证式断语并重写四个高风险主题；经典语句只以历史引文呈现。维护时运行python scripts/verify_project.py --report verification-run.json，实际统计见references/verification-summary.md；确认Node存在且紫微测试未跳过。GitHub自动测试配置在.github/workflows/tests.yml。
 
 ## 名家模块（2.3）
 用户指定作者或要求多流派比较时，读取references/master-methods.md与method-registry.json，按作者id选择模块。可直接在chart.py加 --methods all 或逗号分隔的作者id；也支持简体中文作者姓名。

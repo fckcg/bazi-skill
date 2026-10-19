@@ -15,9 +15,10 @@
     "Removed runtime-age selection; output is natal structure and decade-age ranges only.",
     "Embedded approximate four-pillars fields are removed by the runner; Python is authoritative for bazi.",
     "No online interpretation library, dataset or Tianji transcript is included.",
-    "2.5.1: split policy retains its original lunar day, with raw date and explicit clamping metadata for other policies."
+    "2.5.1: split policy retains its original lunar day, with raw date and explicit clamping metadata for other policies.",
+    "2.6: strict structural failures, no midpoint bazi calculation, per-request reset and explicit iztro/quanshu sihua profile; independent Python reference checks."
   ],
-  "bundle_sha256": "24d50a74af615075a51119fcd68e518ad02362e5041ddac39bfbd95b5aa184bd",
+  "bundle_sha256": "3d3620752ad27e82825cb990b8a29dda5f46333ab1baf6c72566cffa3546ad0a",
   "runtime_packages": [
     {
       "name": "dayjs",
@@ -51,8 +52,8 @@
     }
   ],
   "local_sources_sha256": {
-    "src/runner.ts": "a93deaeaae0437cac53d7bb9b74063a88edd61d556031983198cc06151dec6fb",
-    "src/upstream/algorithm.ts": "e3c7200843465e63a25ca8b404685d5baa3003e7fd19ef413a11baa910554b30",
+    "src/runner.ts": "3575b32444158347ea8d07ecb6bac29c00cb47d294e795134ef8551ea3a5b184",
+    "src/upstream/algorithm.ts": "99a1289270d85daa336f5bc4b50744f347d89d0570426267c363feb95cc7fcf0",
     "src/upstream/types.ts": "13481bb5f1eeb772ce86a539ebea91ba5f2c1161f072876c6dd1449742736a3c",
     "src/upstream/constants.ts": "02f190b8e2718c202de239d57a7e26e0b7b8e1f5155ddce1dbfe92ca1d6eec4e",
     "package.json": "84493a778e41cdb7611ccbac889d72759e9b3afe8f6faae92a396d17fcb8dc02",

@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: '22'
       - name: Run offline tests
-        run: python -m unittest discover -s scripts -p "test_*.py"
+        run: python scripts/verify_project.py --report verification-run.json
       - name: Run lunar-input smoke test
         run: python scripts/chart.py --lunar-date 2014-09-21 --lunar-leap --time 15:16 --utc-offset=+08:00 --gender female
       - name: Run offline dual-chart smoke test

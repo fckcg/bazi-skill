@@ -1,5 +1,6 @@
 """Source-gated parallel review of traditional methods; no event predictions."""
 import argparse
+import hashlib
 from itertools import combinations
 import json
 import sys
@@ -249,6 +250,7 @@ def review_chart(chart_data, selection='all'):
                               'rule_ids':['CHEN-002','REN-001'],
                               'note':'所核对段落在分日解释上的立场不同；只提示理论约定差异，不改变历法月柱或用多数裁决。'})
     return {'methods_version':registry['version'],'chart_version':chart_data.get('version'),
+            'registry_sha256':hashlib.sha256(REGISTRY.read_bytes()).hexdigest(),
             'time_conventions_inherited':chart_data.get('conventions'),
             'central_facts':f,'candidate_facts':candidate_facts,
             'birth_uncertainty_minutes':chart_data.get('conventions',{}).get('uncertainty_minutes'),

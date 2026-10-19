@@ -31548,6 +31548,28 @@ var import_lunar_javascript = __toESM(require_lunar_javascript());
 // src/upstream/constants.ts
 var STEMS = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
 var BRANCHES = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+var SI_HUA_TABLE = {
+  0: ["廉贞", "破军", "武曲", "太阳"],
+  // 甲
+  1: ["天机", "天梁", "紫微", "太阴"],
+  // 乙
+  2: ["天同", "天机", "文昌", "廉贞"],
+  // 丙
+  3: ["太阴", "天同", "天机", "巨门"],
+  // 丁
+  4: ["贪狼", "太阴", "右弼", "天机"],
+  // 戊
+  5: ["武曲", "贪狼", "天梁", "文曲"],
+  // 己
+  6: ["太阳", "武曲", "太阴", "天同"],
+  // 庚
+  7: ["巨门", "太阳", "文曲", "文昌"],
+  // 辛
+  8: ["天梁", "紫微", "左辅", "武曲"],
+  // 壬
+  9: ["破军", "巨门", "太阴", "贪狼"]
+  // 癸
+};
 
 // src/upstream/algorithm.ts
 var DEFAULT_BRIGHTNESS = {
@@ -31607,8 +31629,11 @@ function resolveEffectiveLunarDate(year, month, day, policy = "prev-month") {
   if (policy !== "split") try {
     const monthKey = isLeapMonth ? -lunarMonth : lunarMonth;
     const dayCount = import_lunar_javascript.LunarMonth.fromYm(lunarYear, monthKey)?.getDayCount?.();
-    if (typeof dayCount === "number" && dayCount > 0 && lunarDay > dayCount) lunarDay = dayCount;
-  } catch {
+    if (!Number.isInteger(dayCount) || dayCount < 29 || dayCount > 30)
+      throw new Error("Cannot resolve target lunar month length");
+    if (lunarDay > dayCount) lunarDay = dayCount;
+  } catch (error) {
+    throw new Error(`Lunar month policy failed: ${error.message}`);
   }
   return {
     lunarYear,
@@ -31626,29 +31651,6 @@ function getLunarInfo(year, month, day, hour, policy = "prev-month") {
   const lu = lunar;
   const yearStem = STEMS.indexOf(lu.getYearGan());
   const yearBranch = BRANCHES.indexOf(lu.getYearZhi());
-  let fourPillars;
-  let fourPillarsLunar;
-  try {
-    const effHour = hour !== void 0 && hour >= 0 && hour <= 11 ? hour * 2 : 0;
-    const ec = import_lunar_javascript.Solar.fromYmdHms(year, month, day, effHour, 0, 0).getLunar().getEightChar();
-    const yearGZ = ec.getYear();
-    const monthGZ = ec.getMonth();
-    const dayGZ = `${lu.getDayGan()}${lu.getDayZhi()}`;
-    const dayStem = STEMS.indexOf(lu.getDayGan());
-    const branchIdx = hour !== void 0 && hour >= 0 && hour <= 11 ? hour : 0;
-    const timeStemBase = dayStem % 5 * 2;
-    const timeStemIdx = (timeStemBase + branchIdx) % 10;
-    const timeGZ = `${STEMS[timeStemIdx]}${BRANCHES[branchIdx]}`;
-    fourPillars = [yearGZ, monthGZ, dayGZ, timeGZ];
-    const absM = effective.lunarMonth;
-    const yearGZLunar = `${STEMS[yearStem]}${BRANCHES[yearBranch]}`;
-    const monthBranchIdx = (absM + 1) % 12;
-    const monthStemBase = (yearStem % 5 * 2 + 2) % 10;
-    const monthStemIdx = (monthStemBase + (absM - 1)) % 10;
-    const monthGZLunar = `${STEMS[monthStemIdx]}${BRANCHES[monthBranchIdx]}`;
-    fourPillarsLunar = [yearGZLunar, monthGZLunar, dayGZ, timeGZ];
-  } catch {
-  }
   return {
     lunarYear: effective.lunarYear,
     lunarMonth: effective.lunarMonth,
@@ -31659,9 +31661,7 @@ function getLunarInfo(year, month, day, hour, policy = "prev-month") {
     rawLunarYear: Number(lunar.getYear()),
     rawLunarMonth: effective.rawLunarMonth,
     rawLunarDay: effective.rawLunarDay,
-    dayClamped: effective.lunarDay !== effective.rawLunarDay,
-    fourPillars,
-    fourPillarsLunar
+    dayClamped: effective.lunarDay !== effective.rawLunarDay
   };
 }
 var MING_ZHU_TABLE = {
@@ -31781,12 +31781,9 @@ function mapStarType(starName, iztroType) {
   return "minor";
 }
 function parseWuxingJu(name) {
-  if (name.includes("二")) return 2;
-  if (name.includes("三")) return 3;
-  if (name.includes("四")) return 4;
-  if (name.includes("五")) return 5;
-  if (name.includes("六")) return 6;
-  return 3;
+  const table = { "水二局": 2, "木三局": 3, "金四局": 4, "土五局": 5, "火六局": 6 };
+  if (!(name in table)) throw new Error(`Unknown five-elements class: ${name}`);
+  return table[name];
 }
 function generateChart(birthInfo, opts) {
   const { year, month, day, hour, gender } = birthInfo;
@@ -31798,6 +31795,15 @@ function generateChart(birthInfo, opts) {
     throw new RangeError(`solar date does not exist: ${year}-${month}-${day}`);
   }
   const iztroGender = gender === "male" ? "男" : "女";
+  if (!["male", "female"].includes(gender)) throw new Error("Invalid gender");
+  const sihuaProfile = opts?.sihuaProfile ?? "iztro";
+  if (!["iztro", "quanshu"].includes(sihuaProfile)) throw new Error("Unknown sihua profile");
+  const mutagens = {};
+  STEMS.forEach((stem, index) => {
+    mutagens[stem] = [...SI_HUA_TABLE[index]];
+  });
+  if (sihuaProfile === "quanshu") mutagens["壬"] = ["天梁", "紫微", "天府", "武曲"];
+  import_iztro.astro.config({ yearDivide: "normal", brightness: DEFAULT_BRIGHTNESS, mutagens });
   const leapMode = opts?.leapMonth ?? DEFAULT_LEAP_MONTH;
   const effectiveLunar = resolveEffectiveLunarDate(year, month, day, leapMode);
   let astrolabe;
@@ -31821,6 +31827,7 @@ function generateChart(birthInfo, opts) {
   const palaces = astrolabe.palaces.map((p) => {
     const branch = BRANCHES.indexOf(p.earthlyBranch);
     const stem = STEMS.indexOf(p.heavenlyStem);
+    if (branch < 0 || stem < 0) throw new Error("Unrecognized palace stem/branch");
     const allStars = [
       ...(p.majorStars ?? []).map((s) => {
         const rb = DEFAULT_BRIGHTNESS[s.name]?.[(branch + 10) % 12] ?? s.brightness;
@@ -31891,10 +31898,12 @@ function generateChart(birthInfo, opts) {
   });
   const mingGongBranch = BRANCHES.indexOf(astrolabe.earthlyBranchOfSoulPalace);
   const shenGongBranch = BRANCHES.indexOf(astrolabe.earthlyBranchOfBodyPalace);
+  if (mingGongBranch < 0 || shenGongBranch < 0) throw new Error("Unrecognized soul/body palace");
   const wuxingJuName = astrolabe.fiveElementsClass;
   const wuxingJu = parseWuxingJu(wuxingJuName);
   const ziweiPalace = palaces.find((p) => p.stars.some((s) => s.name === "紫微" && s.type === "major"));
-  const ziweiPos = ziweiPalace?.branch ?? 0;
+  if (!ziweiPalace) throw new Error("Ziwei star is missing");
+  const ziweiPos = ziweiPalace.branch;
   const daXians = palaces.filter((p) => p.daXianAge).sort((a, b) => a.daXianAge[0] - b.daXianAge[0]).map((p) => ({
     startAge: p.daXianAge[0],
     endAge: p.daXianAge[1],
@@ -31929,6 +31938,18 @@ function generateChart(birthInfo, opts) {
 // src/runner.ts
 var policies = /* @__PURE__ */ new Set(["split", "prev-month", "next-month", "origin-month"]);
 try {
+  if (process.argv.includes("--self-test")) {
+    if (parseWuxingJu("火六局") !== 6) throw new Error("Known class failed");
+    let rejected = false;
+    try {
+      parseWuxingJu("未知局");
+    } catch {
+      rejected = true;
+    }
+    if (!rejected) throw new Error("Unknown class was silently accepted");
+    process.stdout.write(JSON.stringify({ unknownClassRejected: true }));
+    process.exit(0);
+  }
   const payload = JSON.parse((0, import_node_fs.readFileSync)(0, "utf8"));
   if (!Array.isArray(payload.requests) || payload.requests.length < 1 || payload.requests.length > 64)
     throw new Error("requests must contain 1..64 charts");
@@ -31938,7 +31959,12 @@ try {
       throw new Error("Explicit gender and leap-month policy required");
     if (!Number.isInteger(b.year) || b.year < 1950 || b.year > 2050)
       throw new Error("Supported chart years: 1950..2050");
-    const chart = generateChart(b, { leapMonth: request.leapMonth });
+    const sihuaProfile = request.sihuaProfile ?? "iztro";
+    if (!["iztro", "quanshu"].includes(sihuaProfile)) throw new Error("Unknown sihua profile");
+    const chart = generateChart(b, { leapMonth: request.leapMonth, sihuaProfile });
+    const majors = chart.palaces.flatMap((p) => p.stars.filter((s) => s.type === "major").map((s) => s.name));
+    if (chart.palaces.length !== 12 || new Set(chart.palaces.map((p) => p.branch)).size !== 12 || majors.length !== 14 || new Set(majors).size !== 14)
+      throw new Error("Incomplete chart: missing or duplicate palaces/major stars");
     const { fourPillars, fourPillarsLunar, ...lunar } = chart.lunarInfo;
     const { currentAge, currentDaXianIndex, ...natal } = chart;
     return {

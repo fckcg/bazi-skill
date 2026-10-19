@@ -106,3 +106,7 @@
 - [八字与紫微的传统规则比较](ziwei-bazi-jiaocha.md)
 
 - [原文核对范围与限制](source-review-scopes.md)
+
+- [2.6使用与维护](upgrade-2.6.md)
+- [盲测与未来登记](study-protocol.md)
+- [自动生成的验证状态](verification-summary.md)

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "birth": "1990-07-01T15:10:00",
+  "timezone": "Asia/Shanghai",
+  "gender": "female",
+  "uncertainty_minutes": null,
+  "time_source": "unknown",
+  "place": "示例地点（请替换）",
+  "longitude": 120.0,
+  "longitude_source": "示例坐标（请替换）",
+  "clock": "standard",
+  "day_rule": "early-late",
+  "ziwei_leap": "all",
+  "ziwei_day_rule": "next-day",
+  "sihua_profile": "iztro"
+}
